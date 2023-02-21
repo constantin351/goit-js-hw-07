@@ -5,67 +5,44 @@ console.log(galleryItems);
 
 const galleryList = document.querySelector(".gallery");
 
-
 function createGalleryListItemsArray(galleryItems) {
     
     return galleryItems
-        .map(({ preview, original, description }) => { 
+        .map(({ preview, original, description }) => {
             return `
-            <a class="gallery__item" href="${original}"><img class="gallery__image" src="${preview}" alt="${description}" title="${description}" /></a>
+            <a class="gallery__item" href="${original}"><img class="gallery__image" src="${preview}" alt="${description}"/></a>
             `
-        })
+        });
     // .join('')
-}
+};
 
 const galleryItemsArray = createGalleryListItemsArray(galleryItems);
-console.log(galleryItemsArray)
-
+// console.log(galleryItemsArray);
 
 galleryItemsArray.forEach(el => {
     const galleryListItem = document.createElement('li');
-        
     galleryListItem.innerHTML = el;
-    
-    galleryList.append(galleryListItem)
+    galleryList.append(galleryListItem);
 });
 
 console.log(galleryList);
 
+var lightbox = new SimpleLightbox('.gallery a', { captionDelay: 250, captionType: "attr", captionsData: "alt" });
 
-// 
-// const imgEl = document.querySelectorAll(".gallery__image")
-// console.log(imgEl)
-
-// for (const item of imgEl) { 
-//     item.setAttribute("title", imgEl.alt)
-// }
-
-
-// imgEl.forEach(el => {
-//     el.setAttribute("title", imgEl.alt)
-
-// });
-
+ 
+// function onGalleryImgsListClick(event) {
+//     event.preventDefault();
     
-// console.log(imgEl)
+//     if (!event.target.classList.contains('gallery__image')) { 
+//         return;
+//     }
+        
+//    var lightbox = new SimpleLightbox('.gallery a', { captionDelay: 250, captionType: "attr", captionsData: 'alt' });
+// };
 
+// // { captionDelay: 250, captionType: "attr", captionsData: 'alt' }
 
+// galleryList.addEventListener('click', onGalleryImgsListClick);
 
-// 
-
-
-    
-function onGalleryImgsListClick(event) {
-    event.preventDefault();
-    
-    if (!event.target.classList.contains('gallery__image')) { 
-        return;
-    }
-    // console.log(event.target.dataset.source);
-    
-    var lightbox = new SimpleLightbox('.gallery a', { /* options */ }); 
-};
-
-galleryList.addEventListener('click', onGalleryImgsListClick);
 
 
