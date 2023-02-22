@@ -4,12 +4,6 @@ import { galleryItems } from './gallery-items.js';
 console.log(galleryItems);
 
 const galleryImgsBoxDiv = document.querySelector(".gallery");
-
-const galleryImgsItemsMarkup = createGalleryItemMarkup(galleryItems);
-// console.log(galleryImgsItemsMarkup);
-galleryImgsBoxDiv.insertAdjacentHTML("afterbegin", galleryImgsItemsMarkup);
-
-galleryImgsBoxDiv.addEventListener('click', onGalleryImgsBoxDivClick);
 // console.log(galleryImgsBoxDiv);
 
 function createGalleryItemMarkup(galleryItems) {
@@ -31,25 +25,120 @@ function createGalleryItemMarkup(galleryItems) {
     .join('');
 };
 
+const galleryImgsItemsMarkup = createGalleryItemMarkup(galleryItems);
+// console.log(galleryImgsItemsMarkup);
+
+galleryImgsBoxDiv.insertAdjacentHTML("afterbegin", galleryImgsItemsMarkup);
+
+
+galleryImgsBoxDiv.addEventListener('click', onGalleryImgsBoxDivClick);
+
 function onGalleryImgsBoxDivClick(event) {
     event.preventDefault();
     
     if (!event.target.classList.contains('gallery__image')) { 
         return;
     }
-    // console.log(event.target.dataset.source);
 
-    const instance = basicLightbox.create(`
-    <img class="gallery__image" src="${event.target.dataset.source}" alt="${event.target.alt}" width="800" height="600"></img>
-    `);
-
-    instance.show();
-    
-    // закрытие по ESC
-    galleryImgsBoxDiv.addEventListener('keydown', (event) => {
+    function closeModal(event) { 
         if (event.key === "Escape") { 
             instance.close();
+            
+            console.log(visible);
         }
-    });
+    };
+
+    const instance = basicLightbox.create(`
+        <img class="gallery__image" src="${event.target.dataset.source}" alt="${event.target.alt}" width="800" height="600"></img>
+        `,
+        {
+            onShow: instance => { 
+                galleryImgsBoxDiv.addEventListener('keydown', closeModal)
+            },
+            onClose: instance => { 
+                galleryImgsBoxDiv.removeEventListener('keydown', closeModal)
+            },
+        }
+    );
+
+    const visible = instance.visible()
+
+    instance.show();
 };
 
+
+// изначальный вариант
+
+// function onGalleryImgsBoxDivClick(event) {
+//     event.preventDefault();
+    
+//     if (!event.target.classList.contains('gallery__image')) { 
+//         return;
+//     }
+//     // console.log(event.target.dataset.source);
+
+//     const instance = basicLightbox.create(`
+//     <img class="gallery__image" src="${event.target.dataset.source}" alt="${event.target.alt}" width="800" height="600"></img>
+//     `);
+
+//     instance.show();
+    
+//     // закрытие по ESC
+//     galleryImgsBoxDiv.addEventListener('keydown', (event) => {
+//         if (event.key === "Escape") { 
+//             instance.close();
+//         }
+//     });
+// };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// function onGalleryImgsBoxDivClick(event) {
+//     event.preventDefault();
+    
+//     if (!event.target.classList.contains('gallery__image')) { 
+//         return;
+//     }
+//     // console.log(event.target.dataset.source);
+
+//     const instance = basicLightbox.create(`
+//     <img class="gallery__image" src="${event.target.dataset.source}" alt="${event.target.alt}" width="800" height="600"></img>
+//     `);
+    
+//     instance.show();
+       
+//     // закрытие по ESC
+
+//     const visible = instance.visible()
+
+//     galleryImgsBoxDiv.addEventListener('keydown', (event) => {
+//         if (event.key === "Escape") { 
+//             instance.close(remove);
+//             // console.log(visible)
+//         }
+//     });
+
+//     const remove = (instance) => { 
+//         galleryImgsBoxDiv.removeEventListener('keydown', (event) => {
+//         if (event.key === "Escape") { 
+//             instance.close();
+//             // const visible = instance.visible()
+//             console.log(visible)
+//         }
+//     })
+//     }
+// };
